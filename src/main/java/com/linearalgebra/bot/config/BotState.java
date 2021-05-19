@@ -98,7 +98,7 @@ public enum BotState {
 
         @Override
         public BotState nextState() {
-            return null;
+            return Main;
         }
     },
 
@@ -117,7 +117,7 @@ public enum BotState {
 
         @Override
         public BotState nextState() {
-            return null;
+            return Main;
         }
     },
 
