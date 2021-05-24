@@ -20,14 +20,13 @@ public class User {
     @Column(name = "name")
     private String name;
 
-    private boolean isNew;
-
     public User() {
     }
 
-    public User(Long chatId, Integer stateId) {
+    public User(Long chatId, Integer stateId, String name) {
         this.chatId = chatId;
         this.stateId = stateId;
+        this.name = name;
     }
 
     public Long getChatId() {
@@ -52,13 +51,5 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public boolean isNew() {
-        return isNew;
-    }
-
-    public void setNew(boolean aNew) {
-        isNew = aNew;
     }
 }

@@ -166,14 +166,15 @@ public enum BotState {
         this.inputNeeded = inputNeeded;
     }
 
-    public static BotState getState(UserServiceImplementation userService, long chat_id){
-        User user = userService.getUserById(chat_id);
+    public static BotState getState(UserServiceImplementation userService, long chatId, String name){
+        User user = userService.getUserByChatId(chatId);
         if(user == null){
-            user = new User(chat_id, getInitialState().ordinal());
+            user = new User(chatId, getInitialState().ordinal(), name);
             userService.addUser(user);
             return getInitialState();
         }
         else{
+            userService.addUser(user);
             return getById(user.getStateId());
         }
     }

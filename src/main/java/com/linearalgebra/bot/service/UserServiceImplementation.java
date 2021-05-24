@@ -12,7 +12,6 @@ public class UserServiceImplementation implements UserService {
 
     private final UserRepository userRepository;
 
-
     @Autowired
     public UserServiceImplementation(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -30,5 +29,10 @@ public class UserServiceImplementation implements UserService {
         if(optional.isPresent())
             user = optional.get();
         return user;
+    }
+
+    @Override
+    public User getUserByChatId(Long chatId) {
+        return userRepository.getUserByChatId(chatId);
     }
 }
