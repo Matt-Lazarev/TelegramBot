@@ -1,6 +1,6 @@
 package com.linearalgebra.bot.config;
 
-import com.linearalgebra.bot.User;
+import com.linearalgebra.bot.entity.User;
 
 public class BotContext {
     private final MyTelegramBot bot;

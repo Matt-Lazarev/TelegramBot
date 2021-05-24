@@ -1,22 +1,26 @@
-package com.linearalgebra.bot;
+package com.linearalgebra.bot.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "chat_id")
     private Long chatId;
+
+    @Column(name = "state_id")
     private Integer stateId;
+
+    @Column(name = "name")
     private String name;
-    private boolean isAdmin;
+
     private boolean isNew;
-    private List<Integer> options = new ArrayList<>();
 
     public User() {
     }
@@ -24,24 +28,6 @@ public class User {
     public User(Long chatId, Integer stateId) {
         this.chatId = chatId;
         this.stateId = stateId;
-    }
-
-    public User(Long chatId, Integer stateId, boolean isAdmin) {
-        this.chatId = chatId;
-        this.stateId = stateId;
-        this.isAdmin = isAdmin;
-    }
-
-    public void addOption(int option){
-        options.add(option);
-    }
-
-    public int getLastOption(){
-        return options.get(options.size()-1);
-    }
-
-    public List<Integer> getAllOptions(){
-        return options;
     }
 
     public Long getChatId() {
@@ -66,14 +52,6 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
     }
 
     public boolean isNew() {

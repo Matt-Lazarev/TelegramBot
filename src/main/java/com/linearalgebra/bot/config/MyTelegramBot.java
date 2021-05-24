@@ -2,16 +2,16 @@ package com.linearalgebra.bot.config;
 
 import com.linearalgebra.bot.controller.UserService;
 import com.linearalgebra.bot.handler.TheoryHandler;
+import com.linearalgebra.bot.service.UserServiceImplementation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import com.linearalgebra.bot.User;
+import com.linearalgebra.bot.entity.User;
 
 import java.util.List;
-
-import static com.linearalgebra.bot.handler.TheoryHandler.handle;
 
 public class MyTelegramBot extends TelegramWebhookBot {
 
@@ -19,7 +19,9 @@ public class MyTelegramBot extends TelegramWebhookBot {
     private String username;
     private String webhook;
 
-    private static final UserService userService = new UserService();
+    @Autowired
+    private static UserServiceImplementation userService;
+
 
     public MyTelegramBot(){ }
 
@@ -36,11 +38,10 @@ public class MyTelegramBot extends TelegramWebhookBot {
 
         if (update.getMessage()!=null && update.getMessage().hasText()) {
             final String text = update.getMessage().getText();
-            final long chat_id = update.getMessage().getChatId();
+            final long chatId = update.getMessage().getChatId();
 
-            BotState state = BotState.getState(userService, chat_id);
-
-            User user = userService.getUserById((int) chat_id);
+            BotState state = BotState.getState(userService, chatId);
+            User user = userService.getUserById(chatId);
             BotContext context = BotContext.of(this, user, text);
 
             state.handleInput(context);
@@ -58,7 +59,7 @@ public class MyTelegramBot extends TelegramWebhookBot {
     public void handleCallbackQuery(CallbackQuery query){
         final long chatId = query.getMessage().getChatId();
         BotState state = BotState.getState(userService, chatId);
-        User user = userService.getUserById((int) chatId);
+        User user = userService.getUserById(chatId);
         BotContext context = BotContext.of(this, user);
         if(query.getData().startsWith("Theory")){
             List<String> theoryAndPhoto = TheoryHandler.handle(query.getData());

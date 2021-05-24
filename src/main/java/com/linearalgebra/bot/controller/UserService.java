@@ -1,10 +1,9 @@
 package com.linearalgebra.bot.controller;
 
-import com.linearalgebra.bot.User;
+import com.linearalgebra.bot.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class UserService {
     private static List<User> users = new ArrayList<>();

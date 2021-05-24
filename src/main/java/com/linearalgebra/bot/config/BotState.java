@@ -1,7 +1,7 @@
 package com.linearalgebra.bot.config;
 
-import com.linearalgebra.bot.User;
-import com.linearalgebra.bot.controller.UserService;
+import com.linearalgebra.bot.entity.User;
+import com.linearalgebra.bot.service.UserServiceImplementation;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
@@ -166,8 +166,8 @@ public enum BotState {
         this.inputNeeded = inputNeeded;
     }
 
-    public static BotState getState(UserService userService, long chat_id){
-        User user = userService.getUserById((int) chat_id);
+    public static BotState getState(UserServiceImplementation userService, long chat_id){
+        User user = userService.getUserById(chat_id);
         if(user == null){
             user = new User(chat_id, getInitialState().ordinal());
             userService.addUser(user);
