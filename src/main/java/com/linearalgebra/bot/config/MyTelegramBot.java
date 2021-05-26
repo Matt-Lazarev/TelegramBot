@@ -1,6 +1,7 @@
 package com.linearalgebra.bot.config;
 
-import com.linearalgebra.bot.handler.TheoryHandler;
+import com.linearalgebra.bot.handler.CallbackHandler;
+import com.linearalgebra.bot.sender.MessageSender;
 import com.linearalgebra.bot.service.UserServiceImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
@@ -17,7 +18,6 @@ public class MyTelegramBot extends TelegramWebhookBot {
     private String token;
     private String username;
     private String webhook;
-
 
     private UserServiceImplementation userService;
 
@@ -64,12 +64,22 @@ public class MyTelegramBot extends TelegramWebhookBot {
     public void handleCallbackQuery(CallbackQuery query){
         final long chatId = query.getMessage().getChatId();
         final String name = query.getMessage().getFrom().getUserName();
-        BotState state = BotState.getState(userService, chatId, name);
+        BotState.getState(userService, chatId, name);
         User user = userService.getUserByChatId(chatId);
         BotContext context = BotContext.of(this, user);
         if(query.getData().startsWith("Theory")){
-            List<String> theoryAndPhoto = TheoryHandler.handle(query.getData());
-            state.sendPhoto(context, theoryAndPhoto);
+            List<String> theoryAndPhoto = CallbackHandler.handleTheory(query.getData());
+            MessageSender.sendPhoto(context, theoryAndPhoto);
+        }
+        else if (query.getData().startsWith("Calculator")) {
+            user.setStateId(CallbackHandler.handleCalculator(query.getData()).ordinal());
+            userService.addUser(user);
+            MessageSender.sendMessage(context, "Введи размеры матрицы через пробел:");
+        }
+        else if (query.getData().startsWith("Generator")) {
+            user.setStateId(CallbackHandler.handleGenerator(query.getData()).ordinal());
+            userService.addUser(user);
+            CallbackHandler.handleGenerator(query.getData()).enter(context);
         }
     }
 

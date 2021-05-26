@@ -7,6 +7,7 @@ public class BotContext {
     private final User user;
     private final String input;
 
+
     public static BotContext of(MyTelegramBot bot, User user, String input){
         return new BotContext(bot, user, input);
     }

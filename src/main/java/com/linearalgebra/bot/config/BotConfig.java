@@ -1,6 +1,6 @@
 package com.linearalgebra.bot.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.linearalgebra.bot.sender.MessageSender;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,13 +14,18 @@ public class BotConfig {
     private String username;
     private String webhook;
 
-    @Bean()
+    @Bean
     public MyTelegramBot botConfiguration(){
         MyTelegramBot bot = new MyTelegramBot(new DefaultBotOptions());
         bot.setWebhook(webhook);
         bot.setUsername(username);
         bot.setToken(token);
         return bot;
+    }
+
+    @Bean
+    public MessageSender sender(){
+        return new MessageSender();
     }
 
     public String getToken() {
